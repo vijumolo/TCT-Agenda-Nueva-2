@@ -126,7 +126,7 @@ export default function App() {
       {loading ? (
         <div className="text-center py-12 text-slate-400 animate-pulse">Cargando eventos...</div>
       ) : (
-        <EventList events={filtered} onEdit={(e) => { setEditing(e); setShowForm(true); }} onDelete={handleDelete} />
+        <EventList events={filtered} onEdit={(e) => { setEditing(e); setShowForm(true); window.scrollTo({ top: 0, behavior: "smooth" }); }} onDelete={handleDelete} />
       )}
     </div>
   );
