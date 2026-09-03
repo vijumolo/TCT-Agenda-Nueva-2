@@ -82,9 +82,12 @@ export default function App() {
   return (
     <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto space-y-6">
       <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-brand-700">Agenda de Cronometrajes</h1>
-          <p className="text-slate-500 text-sm">TCT Colombia</p>
+        <div className="flex items-center gap-4">
+          <img src="/tct-logo.png" alt="TCT Logo" className="h-16 sm:h-20" />
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-brand-700">Agenda de Cronometrajes</h1>
+            <p className="text-slate-500 text-sm">TCT Colombia</p>
+          </div>
         </div>
         <div className="flex gap-3">
           <button
