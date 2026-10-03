@@ -20,6 +20,7 @@ export default function App() {
     event_type: "",
     chip_type: "",
     month: "",
+    year: "",
   });
 
   const locations = useMemo(
@@ -45,6 +46,12 @@ export default function App() {
         const eventMonth = e.event_date.substring(5, 7);
         if (eventMonth !== filters.month) return false;
       } else if (filters.month && !e.event_date) {
+        return false;
+      }
+      if (filters.year && e.event_date) {
+        const eventYear = e.event_date.substring(0, 4);
+        if (eventYear !== filters.year) return false;
+      } else if (filters.year && !e.event_date) {
         return false;
       }
       return true;

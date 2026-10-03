@@ -18,13 +18,23 @@ export default function FilterBar({ filters, setFilters, locations, eventTypes, 
 
   return (
     <div className="glass rounded-2xl p-4 animate-fade-in">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
         <input
           value={filters.search}
           onChange={(e) => set("search", e.target.value)}
           placeholder="Buscar evento..."
           className="px-4 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm"
         />
+        <select
+          value={filters.year}
+          onChange={(e) => set("year", e.target.value)}
+          className="px-4 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm"
+        >
+          <option value="">Todos los años</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+        </select>
         <select
           value={filters.month}
           onChange={(e) => set("month", e.target.value)}
@@ -66,7 +76,7 @@ export default function FilterBar({ filters, setFilters, locations, eventTypes, 
           ))}
         </select>
         <button
-          onClick={() => setFilters({ search: "", location: "", event_type: "", chip_type: "", month: "" })}
+          onClick={() => setFilters({ search: "", location: "", event_type: "", chip_type: "", month: "", year: "" })}
           className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium transition"
         >
           Limpiar filtros
