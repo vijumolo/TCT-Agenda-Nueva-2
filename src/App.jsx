@@ -14,6 +14,7 @@ export default function App() {
   const { events, loading, add, edit, remove } = useEvents();
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(null);
   const [filters, setFilters] = useState({
     search: "",
     location: "",
@@ -68,9 +69,14 @@ export default function App() {
     setShowForm(false);
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("¿Eliminar este evento?")) {
-      await remove(id);
+  const handleDelete = (event) => {
+    setConfirmDelete(event);
+  };
+
+  const confirmDeleteAction = async () => {
+    if (confirmDelete) {
+      await remove(confirmDelete.id);
+      setConfirmDelete(null);
     }
   };
 
@@ -137,6 +143,31 @@ export default function App() {
         <div className="text-center py-12 text-slate-400 animate-pulse">Cargando eventos...</div>
       ) : (
         <EventList events={filtered} onEdit={(e) => { setEditing(e); setShowForm(true); window.scrollTo({ top: 0, behavior: "smooth" }); }} onDelete={handleDelete} />
+      )}
+
+      {confirmDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="glass rounded-2xl p-6 w-full max-w-sm animate-fade-in">
+            <h3 className="text-lg font-bold text-slate-800 mb-2">¿Eliminar evento?</h3>
+            <p className="text-sm text-slate-600 mb-6">
+              ¿Estás seguro de borrar "<strong>{confirmDelete.name}</strong>"? Esta acción no se puede deshacer.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                className="flex-1 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmDeleteAction}
+                className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition"
+              >
+                Sí, eliminar
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
