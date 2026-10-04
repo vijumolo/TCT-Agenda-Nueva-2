@@ -66,7 +66,7 @@ export default function EventCard({ event, onEdit, onDelete }) {
             Editar
           </button>
           <button
-            onClick={() => onDelete(event.id)}
+            onClick={() => onDelete(event)}
             className="py-2 px-3 text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded-xl font-medium transition active:scale-95"
           >
             🗑
