@@ -14,6 +14,7 @@ export default function App() {
   const { events, loading, add, edit, remove } = useEvents();
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [filters, setFilters] = useState({
     search: "",
@@ -88,8 +89,15 @@ export default function App() {
     );
   }
 
-  if (!user) {
-    return <LoginForm onLogin={login} onRegister={register} onResetPassword={() => {}} />;
+  if (showLogin && !user) {
+    return (
+      <LoginForm
+        onLogin={login}
+        onRegister={register}
+        onResetPassword={() => {}}
+        onCancel={() => setShowLogin(false)}
+      />
+    );
   }
 
   return (
@@ -103,22 +111,33 @@ export default function App() {
           </div>
         </div>
         <div className="flex gap-3">
-          <button
-            onClick={() => { setEditing(null); setShowForm(!showForm); }}
-            className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition"
-          >
-            {showForm ? "Cerrar" : "+ Nuevo evento"}
-          </button>
-          <button
-            onClick={logout}
-            className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition"
-          >
-            Salir
-          </button>
+          {user ? (
+            <>
+              <button
+                onClick={() => { setEditing(null); setShowForm(!showForm); }}
+                className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition"
+              >
+                {showForm ? "Cerrar" : "+ Nuevo evento"}
+              </button>
+              <button
+                onClick={() => { logout(); setShowForm(false); setEditing(null); setConfirmDelete(null); }}
+                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition"
+              >
+                Salir
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setShowLogin(true)}
+              className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition"
+            >
+              Ingresar
+            </button>
+          )}
         </div>
       </header>
 
-      {showForm && (
+      {user && showForm && (
         <EventForm
           onSave={handleSave}
           editingEvent={editing}
@@ -142,7 +161,7 @@ export default function App() {
       {loading ? (
         <div className="text-center py-12 text-slate-400 animate-pulse">Cargando eventos...</div>
       ) : (
-        <EventList events={filtered} onEdit={(e) => { setEditing(e); setShowForm(true); window.scrollTo({ top: 0, behavior: "smooth" }); }} onDelete={handleDelete} />
+        <EventList events={filtered} canEdit={!!user} onEdit={(e) => { setEditing(e); setShowForm(true); window.scrollTo({ top: 0, behavior: "smooth" }); }} onDelete={handleDelete} />
       )}
 
       {confirmDelete && (

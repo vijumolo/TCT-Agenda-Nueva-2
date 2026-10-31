@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function LoginForm({ onLogin, onRegister, onResetPassword }) {
+export default function LoginForm({ onLogin, onRegister, onResetPassword, onCancel }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
@@ -85,6 +85,14 @@ export default function LoginForm({ onLogin, onRegister, onResetPassword }) {
           >
             {resetMode ? "Volver al login" : "¿Olvidaste tu contraseña?"}
           </button>
+          {onCancel && (
+            <button
+              onClick={onCancel}
+              className="text-slate-500 hover:text-slate-700 hover:underline block"
+            >
+              ← Volver a la agenda
+            </button>
+          )}
         </div>
       </div>
     </div>

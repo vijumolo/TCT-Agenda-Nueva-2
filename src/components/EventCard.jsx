@@ -23,7 +23,7 @@ function formatMoney(v) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP" }).format(v);
 }
 
-export default function EventCard({ event, onEdit, onDelete }) {
+export default function EventCard({ event, onEdit, onDelete, canEdit }) {
   const colors = SCENE_COLORS[event.event_type] || SCENE_COLORS.otros;
   const [imgError, setImgError] = useState(false);
 
@@ -66,20 +66,22 @@ export default function EventCard({ event, onEdit, onDelete }) {
         {event.description && (
           <p className="text-xs text-slate-500 line-clamp-2 hidden sm:block">{event.description}</p>
         )}
-        <div className="flex gap-2 pt-2 mt-auto">
-          <button
-            onClick={() => onEdit(event)}
-            className="flex-1 py-2 text-sm bg-brand-100 hover:bg-brand-200 text-brand-700 rounded-xl font-medium transition active:scale-95"
-          >
-            Editar
-          </button>
-          <button
-            onClick={() => onDelete(event)}
-            className="py-2 px-3 text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded-xl font-medium transition active:scale-95"
-          >
-            🗑
-          </button>
-        </div>
+        {canEdit && (
+          <div className="flex gap-2 pt-2 mt-auto">
+            <button
+              onClick={() => onEdit(event)}
+              className="flex-1 py-2 text-sm bg-brand-100 hover:bg-brand-200 text-brand-700 rounded-xl font-medium transition active:scale-95"
+            >
+              Editar
+            </button>
+            <button
+              onClick={() => onDelete(event)}
+              className="py-2 px-3 text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded-xl font-medium transition active:scale-95"
+            >
+              🗑
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

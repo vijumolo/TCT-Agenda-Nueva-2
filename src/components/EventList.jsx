@@ -1,13 +1,12 @@
-import { useState, useMemo } from "react";
 import EventCard from "./EventCard";
 
-export default function EventList({ events, onEdit, onDelete }) {
+export default function EventList({ events, onEdit, onDelete, canEdit }) {
   if (events.length === 0) {
     return (
       <div className="text-center py-12 text-slate-400">
         <p className="text-4xl mb-4">📋</p>
         <p className="text-lg font-medium">No se encontraron eventos</p>
-        <p className="text-sm">Crea tu primer evento o ajusta los filtros</p>
+        <p className="text-sm">Ajusta los filtros o vuelve más tarde</p>
       </div>
     );
   }
@@ -20,6 +19,7 @@ export default function EventList({ events, onEdit, onDelete }) {
           event={ev}
           onEdit={onEdit}
           onDelete={onDelete}
+          canEdit={canEdit}
         />
       ))}
     </div>
