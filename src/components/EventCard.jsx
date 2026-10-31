@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const SCENE_COLORS = {
   ruta: { from: "#3b82f6", to: "#1d4ed8", icon: "🚴" },
   mtb: { from: "#22c55e", to: "#15803d", icon: "🚵" },
@@ -23,6 +25,7 @@ function formatMoney(v) {
 
 export default function EventCard({ event, onEdit, onDelete }) {
   const colors = SCENE_COLORS[event.event_type] || SCENE_COLORS.otros;
+  const [imgError, setImgError] = useState(false);
 
   return (
     <div className="glass rounded-2xl overflow-hidden animate-slide-up hover:shadow-xl transition-shadow flex flex-col">
@@ -30,8 +33,13 @@ export default function EventCard({ event, onEdit, onDelete }) {
         className="h-24 sm:h-32 flex items-center justify-center text-4xl sm:text-5xl shrink-0"
         style={{ background: `linear-gradient(135deg, ${colors.from}, ${colors.to})` }}
       >
-        {event.image_url ? (
-          <img src={event.image_url} alt={event.name} className="w-full h-full object-cover" />
+        {event.image_url && !imgError ? (
+          <img
+            src={event.image_url}
+            alt={event.name}
+            className="w-full h-full object-cover"
+            onError={() => setImgError(true)}
+          />
         ) : (
           <span>{colors.icon}</span>
         )}
