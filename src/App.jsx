@@ -70,14 +70,24 @@ export default function App() {
     setShowForm(false);
   };
 
+  const [deleteError, setDeleteError] = useState("");
+
   const handleDelete = (event) => {
+    setDeleteError("");
     setConfirmDelete(event);
   };
 
   const confirmDeleteAction = async () => {
-    if (confirmDelete) {
+    if (!confirmDelete) return;
+    try {
       await remove(confirmDelete.id);
       setConfirmDelete(null);
+    } catch (e) {
+      setDeleteError(
+        e?.code === "permission-denied"
+          ? "No tenés permisos para eliminar. Iniciá sesión de nuevo."
+          : "No se pudo eliminar: " + (e?.message || "error desconocido")
+      );
     }
   };
 
@@ -168,9 +178,12 @@ export default function App() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="glass rounded-2xl p-6 w-full max-w-sm animate-fade-in">
             <h3 className="text-lg font-bold text-slate-800 mb-2">¿Eliminar evento?</h3>
-            <p className="text-sm text-slate-600 mb-6">
+            <p className="text-sm text-slate-600 mb-4">
               ¿Estás seguro de borrar "<strong>{confirmDelete.name}</strong>"? Esta acción no se puede deshacer.
             </p>
+            {deleteError && (
+              <p className="text-sm text-red-600 mb-4">{deleteError}</p>
+            )}
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmDelete(null)}
